@@ -1,4 +1,3 @@
-# Crea un archivo llamado app.py y pega esto:
 import flask
 import os
 
@@ -6,10 +5,10 @@ app = flask.Flask(__name__)
 
 @app.route('/')
 def index():
-    # SEGURO: Usamos variables de entorno, no contraseñas fijas
-    secret = os.getenv("SECRET_KEY", "default")
-    return "Version 3: Aprobada. Codigo Limpio."
+    # CODIGO SEGURO: Usamos variable de entorno, nada escrito a fuego
+    secret = os.getenv("SECRET_KEY", "no_secret")
+    return "<h1>Versión 3: Aprobada!</h1><p>SCA: OK, SAST: OK, DAST: OK</p>"
 
 if __name__ == '__main__':
-    # SEGURO: Debug apagado
+    # CODIGO SEGURO: Debug apagado para producción
     app.run(debug=False)
