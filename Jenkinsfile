@@ -51,15 +51,16 @@ pipeline {
                 script {
                     echo "--- Iniciando Escaneo de Código Estático (SAST) ---"
                     
-                    // 1. Ejecutar Bandit EXCLUYENDO venv (-x venv) para no escanear librerías ajenas
-                    sh '. venv/bin/activate && bandit -r . -x venv -f html -o bandit_report.html || true'
+                    // CORRECCIÓN: Escaneamos DIRECTAMENTE 'app.py' en lugar de '.'
+                    // Esto evita que se meta en la carpeta venv por error.
+                    sh '. venv/bin/activate && bandit app.py -f html -o bandit_report.html || true'
                     
-                    // 2. Verificar estatus (también excluyendo venv)
-                    def banditExitCode = sh(script: '. venv/bin/activate && bandit -r . -x venv', returnStatus: true)
+                    // Verificamos estatus solo sobre app.py
+                    def banditExitCode = sh(script: '. venv/bin/activate && bandit app.py', returnStatus: true)
                     
                     if (banditExitCode != 0) {
                         currentBuild.result = 'FAILURE'
-                        error("DETENIDO: Bandit encontró código inseguro en tus archivos. Ver 'bandit_report.html'.")
+                        error("DETENIDO: Bandit encontró código inseguro en 'app.py'. Ver 'bandit_report.html'.")
                     }
                 }
             }
