@@ -1,15 +1,18 @@
-# Crea un archivo llamado app.py y pega esto:
+# Modifica app.py con esto:
 import flask
-import os
+import subprocess
 
 app = flask.Flask(__name__)
 
 @app.route('/')
 def index():
-    # SEGURO: Usamos variables de entorno, no contraseñas fijas
-    secret = os.getenv("SECRET_KEY", "default")
-    return "Version 3: Aprobada. Codigo Limpio."
+    # ERROR SAST: Contraseña hardcodeada (Bandit B105)
+    password = "admin123_password_super_secreta"
+    
+    # ERROR SAST: Ejecución de shell (Bandit B602)
+    subprocess.call("ls -la", shell=True)
+    
+    return "Version 2: Falla en SAST (Bandit)"
 
 if __name__ == '__main__':
-    # SEGURO: Debug apagado
-    app.run(debug=False)
+    app.run(debug=True)
