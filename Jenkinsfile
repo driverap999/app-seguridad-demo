@@ -25,7 +25,7 @@ pipeline {
                 script {
                     echo "--- Iniciando Análisis con SonarQube ---"
                     // "SonarScanner" es el nombre configurado en Global Tool Configuration
-                    def scannerHome = tool 'SonarScanner'
+                    def scannerHome = tool 'Scanner'
                     
                     // "SonarQube" es el nombre del servidor en System Configuration
                     withSonarQubeEnv('SonarQube') {
